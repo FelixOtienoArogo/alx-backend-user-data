@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """
-Module filter_datum
+Module filter_datum.
+
+Module for handling Personal Data.
 """
+
 from typing import List
 import re
 
