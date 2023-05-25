@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""filter_datum."""
+"""
+Module filter_datum
+"""
 from typing import List
 import re
 
