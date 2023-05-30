@@ -7,10 +7,6 @@ from typing import List, TypeVar
 class Auth:
     """Manage the API authentication."""
 
-    def __init__(self):
-        """Initialise the class."""
-        pass
-
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """Return if path in exluded_paths."""
         valid = False
@@ -20,6 +16,12 @@ class Auth:
             valid = True
         if path + "/" in excluded_paths:
             valid = False
+
+        astericks = [stars[:-1]
+                     for stars in excluded_paths if stars[-1] == '*']
+        for stars in astericks:
+            if path.startswith(stars):
+                return False
         return valid
 
     def authorization_header(self, request=None) -> str:
