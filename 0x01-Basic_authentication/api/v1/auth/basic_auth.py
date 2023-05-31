@@ -96,7 +96,6 @@ class BasicAuth(Auth):
 
         email, pwd = self.extract_user_credentials(decoded)
 
-
         if not email or not pwd:
             return None
 
