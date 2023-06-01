@@ -44,7 +44,7 @@ class SessionDBAuth(SessionExpAuth):
         if cookie is None:
             return False
 
-        if not self.user_id_for_session_id(cookie_data):
+        if not self.user_id_for_session_id(cookie):
             return False
 
         user_session = UserSession.search({'session_id': cookie})
@@ -58,5 +58,5 @@ class SessionDBAuth(SessionExpAuth):
             user_session.remove()
             UserSession.save_to_file()
         except Exception:
-            return Fasle
+            return False
         return True
