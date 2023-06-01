@@ -7,13 +7,15 @@ from models.user_session import UserSession
 
 class SessionDBAuth(SessionExpAuth):
     """Store Session ID in database."""
+
     def create_session(self, user_id=None):
         """Create and stores new instance of UserSession."""
         session_id = super().create_session(user_id)
-        if user_id is None:
+        if session_id is None:
             return None
         user_session = UserSession(user_id=user_id, session_id=session_id)
         user_session.save()
+        UserSession.save_to_file()
         return session_id
 
     def user_id_for_session_id(self, session_id=None):
@@ -22,7 +24,6 @@ class SessionDBAuth(SessionExpAuth):
             return None
         UserSession.load_from_file()
         user = UserSession.search({'session_id': session_id})
-        print(user)
 
         if not user:
             return None
@@ -30,8 +31,9 @@ class SessionDBAuth(SessionExpAuth):
         user = user[0]
         start_time = user.created_at
         delta = timedelta(seconds=self.session_duration)
+        print(start_time + delta)
 
-        if (start_time + delta) < datetime.now():
+        if (start_time + delta) < datetime.utcnow():
             return None
         return user.user_id
 
