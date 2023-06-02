@@ -31,7 +31,6 @@ class SessionDBAuth(SessionExpAuth):
         user = user[0]
         start_time = user.created_at
         delta = timedelta(seconds=self.session_duration)
-        print(start_time + delta)
 
         if (start_time + delta) < datetime.utcnow():
             return None
