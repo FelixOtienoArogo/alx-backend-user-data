@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Basic Flask app."""
-from flask import Flask, jsonify, request, abort, redirect
+from flask import Flask, jsonify, request, abort, redirect, url_for
 from auth import Auth
 app = Flask(__name__)
 AUTH = Auth()
 
 
 @app.route('/', methods=['GET'])
-def payload() -> str:
+def home() -> str:
     """Return payload with message."""
     return jsonify({"message": "Bienvenue"})
 
@@ -56,7 +56,7 @@ def logout() -> str:
     if user is None:
         abort(403)
     AUTH.destory_session(user.id)
-    return redirect('/')
+    return redirect(url_for('home'))
 
 
 if __name__ == "__main__":
