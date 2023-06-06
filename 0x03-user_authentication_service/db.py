@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """DB module."""
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -36,4 +37,4 @@ class DB:
     def find_user_by(self, **kwargs: str) -> User:
         """Return the first row found in the users table."""
         self._session.query(User).filter_by(**kwargs).first()
-            return User
+        return User
