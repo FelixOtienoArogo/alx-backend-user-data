@@ -45,7 +45,7 @@ def login():
 
 
 @app.route('/sessions', methods=['DELETE'])
-def logout() -> str:
+def log_out() -> str:
     """Respond to the DELETE /sessions route."""
     session_id = request.cookies.get("session_id", None)
     if session_id is None:
