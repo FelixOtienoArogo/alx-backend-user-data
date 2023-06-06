@@ -80,5 +80,5 @@ class Auth:
             user = self._db.find_user_by(email=email)
             self._db.update_user(user.id, reset_token=new_token)
             return update_token
-        except Exception:
+        except NoResultFound:
             raise ValueError
