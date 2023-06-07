@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Basic Flask app."""
 from flask import Flask, jsonify, request, abort, redirect
+from flask.helpers import make_response
 from auth import Auth
+from user import User
 app = Flask(__name__)
 AUTH = Auth()
 
@@ -34,21 +36,23 @@ def login():
         email = request.form['email']
         password = request.form['password']
     except KeyError:
-        abort(400)
+        abort(401)
     if not AUTH.valid_login(email, password):
         abort(401)
     session_id = AUTH.create_session(email)
 
-    message = jsonify({"email": email, "message": "logged in"})
+    message = make_response(jsonify({"email": email, "message": "logged in"}))
     message.set_cookie("session_id", session_id)
     return message
 
 
-@app.route('sessions', methods=['DELETE'])
+@app.route('/sessions', methods=['DELETE'])
 def logout() -> str:
     """Respond to the DELETE /sessions route."""
-    session_id = request.cookies.get("session_id", None)
-
+    cookies = request.cookies
+    for key in cookies.keys():
+        print(key)
+    session_id = cookies.get("session_id", None)
     if session_id is None:
         abort(403)
 
