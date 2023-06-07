@@ -50,9 +50,7 @@ def login():
 def logout() -> str:
     """Respond to the DELETE /sessions route."""
     cookies = request.cookies
-    for key in cookies.keys():
-        print(key)
-    session_id = cookies.get("session_id", None)
+    session_id = cookies.get("session_id")
     if session_id is None:
         abort(403)
 
