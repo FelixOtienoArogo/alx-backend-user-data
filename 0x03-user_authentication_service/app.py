@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Basic Flask app."""
-from flask import Flask, jsonify, request, abort, redirect, url_for
+from flask import Flask, jsonify, request, abort, redirect
 from auth import Auth
 app = Flask(__name__)
 AUTH = Auth()
 
 
 @app.route('/', methods=['GET'])
-def home() -> str:
+def payload() -> str:
     """Return payload with message."""
     return jsonify({"message": "Bienvenue"})
 
@@ -42,43 +42,6 @@ def login():
     message = jsonify({"email": email, "message": "logged in"})
     message.set_cookie("session_id", session_id)
     return message
-
-
-@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
-def logout():
-    """Respond to the DELETE /sessions route."""
-    session_id = request.cookies.get("session_id", None)
-    user = AUTH.get_user_from_session_id(session_id)
-    if session_id is None or user is None:
-        abort(403)
-    return redirect('/')
-
-
-@app.route('/profile', methods=['GET'])
-def profile() -> str:
-    """Respond to the GET /profile route."""
-    session_id = request.cookies.get("session_id", None)
-    if session_id is None:
-        abort(403)
-
-    user = AUTH.get_user_from_session_id(session_id)
-    if user is None:
-        abort(403)
-    return jsonify({"email": user.email}), 200
-
-
-@app.routo('/reset_password', methods=['POST'])
-def get_reset_password_token() -> str:
-    """Respond to the POST /reset_password route."""
-    try:
-        email = request.form['email']
-    except Exception:
-        abort(403)
-    try:
-        reset_token = AUTH.get_reset_password_token(email)
-    except ValueError:
-        abort(403)
-    return jsonify({"email": email, "reset_token": reset_token}), 200
 
 
 if __name__ == "__main__":
